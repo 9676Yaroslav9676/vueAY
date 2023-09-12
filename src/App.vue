@@ -1,37 +1,49 @@
 <template>
   <div class="app">
     <h1>Сторінка з постами</h1>
-    <my-button @click="showDialog" style="margin: 15px 0"
-      >Створити користувача</my-button
-    >
+    <div class="app__btns">
+      <my-button @click="showDialog">Створити користувача</my-button>
+      <my-select v-model="selectedSort" :options="sortOptions" />
+    </div>
+
     <my-dialog v-model:show="dialogVisible">
       <post-form @create="createPost" />
     </my-dialog>
 
-    <post-list :posts="posts" @remove="removePost" />
+    <post-list
+      :posts="sortedPosts"
+      @remove="removePost"
+      v-if="!isPostLoading"
+    />
+    <div v-else>Йде завантаження...</div>
   </div>
 </template>
 
 <script>
-import PostForm from "./components/PostForm.vue";
-import PostList from "./components/PostList.vue";
+import axios from "axios";
+import PostForm from "@/components/PostForm";
+import PostList from "@/components/PostList";
+import MyButton from "@/components/UI/MyButton";
+import MySelect from "@/components/UI/MySelect";
 
 export default {
   components: {
+    MySelect,
+    MyButton,
     PostForm,
     PostList,
   },
 
   data() {
     return {
-      posts: [
-        { id: 1, title: "Javascript", body: "Опис поста" },
-        { id: 2, title: "Javascript 2", body: "Опис поста 2" },
-        { id: 3, title: "Javascript 3", body: "Опис поста 3" },
-        { id: 4, title: "Javascript 4", body: "Опис поста 4" },
-      ],
-
+      posts: [],
       dialogVisible: false,
+      isPostLoading: false,
+      selectedSort: "",
+      sortOptions: [
+        { value: "title", name: "По назві" },
+        { value: "body", name: "По вмісту" },
+      ],
     };
   },
 
@@ -46,7 +58,34 @@ export default {
     showDialog() {
       this.dialogVisible = true;
     },
+    async fetchPosts() {
+      try {
+        this.isPostLoading = true;
+        const response = await axios.get(
+          "https://jsonplaceholder.typicode.com/posts?_limit=10"
+        );
+        this.posts = response.data;
+      } catch (e) {
+        alert("Помилка");
+      } finally {
+        this.isPostLoading = false;
+      }
+    },
   },
+
+  mounted() {
+    this.fetchPosts();
+  },
+
+  computed: {
+    sortedPosts() {
+      return [...this.posts].sort((post1, post2) =>
+        post1[this.selectedSort]?.localeCompare(post2[this.selectedSort])
+      );
+    },
+  },
+
+  watch: {},
 };
 </script>
 
@@ -59,5 +98,11 @@ export default {
 
 .app {
   padding: 20px;
+}
+
+.app__btns {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
 }
 </style>
