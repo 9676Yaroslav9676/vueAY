@@ -1,5 +1,6 @@
 <template>
     <div>
+      <h1>{{ $store.state.likes }}</h1>
       <h1>Сторінка з постами</h1>
       <my-input
       v-focus
