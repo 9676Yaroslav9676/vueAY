@@ -1,30 +1,34 @@
 <template>
-    <div class="navbar">
-        <div @click="$router.push('/')">Vue 3</div>
-        <div class="navbar__btns">
-            <my-button @click="$router.push('/posts')">Пости</my-button>
-            <my-button style="margin-left: 20px;" @click="$router.push('/about')">Про сайт</my-button>
-            <my-button style="margin-left: 20px;" @click="$router.push('/store')">store</my-button>
-        </div>
+  <div class="navbar">
+    <div @click="$router.push('/')">Vue 3</div>
+    <div class="navbar__btns">
+      <my-button @click="$router.push('/posts')">Пости</my-button>
+      <my-button style="margin-left: 20px" @click="$router.push('/about')"
+        >Про сайт</my-button
+      >
+      <my-button style="margin-left: 20px" @click="$router.push('/store')"
+        >store</my-button
+      >
+      <my-button style="margin-left: 20px" @click="$router.push('/composition')"
+        >Composition</my-button
+      >
     </div>
+  </div>
 </template>
 
-
-<script>
-
-</script>
+<script></script>
 
 <style scoped>
-.navbar{
-   height: 50px;
-   background-color: lightgray;
-   box-shadow: 2px 2px 4px gray; 
-   display: flex;
-   align-items: center;
-   padding: 0 15px;
+.navbar {
+  height: 50px;
+  background-color: lightgray;
+  box-shadow: 2px 2px 4px gray;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
 }
 
 .navbar__btns {
-    margin-left: auto;
+  margin-left: auto;
 }
 </style>
