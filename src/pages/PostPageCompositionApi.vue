@@ -3,21 +3,16 @@
     <h1>Сторінка з постами</h1>
     <my-input v-focus v-model="searchQuery" placeholder="Пошук..." />
     <div class="app__btns">
-      <my-button @click="showDialog">Створити користувача</my-button>
+      <my-button>Створити користувача</my-button>
       <my-select v-model="selectedSort" :options="sortOptions" />
     </div>
 
     <my-dialog v-model:show="dialogVisible">
-      <post-form @create="createPost" />
+      <post-form />
     </my-dialog>
 
-    <post-list
-      :posts="sortedAndSearchedPosts"
-      @remove="removePost"
-      v-if="!isPostLoading"
-    />
+    <post-list :posts="sortedAndSearchedPosts" v-if="!isPostsLoading" />
     <div v-else>Йде завантаження...</div>
-    <div v-intersection="loadMorePosts" class="observer"></div>
   </div>
 </template>
 
@@ -28,7 +23,7 @@ import MyButton from "@/components/UI/MyButton";
 import MySelect from "@/components/UI/MySelect";
 import usePosts from "@/hooks/usePosts";
 import useSortedPosts from "@/hooks/useSortedPosts";
-import useSortedAndSearch from "@/hooks/useSortedAndSearch";
+import useSortedAndSearchedPosts from "@/hooks/useSortedAndSearchedPosts";
 
 export default {
   components: {
@@ -51,7 +46,7 @@ export default {
     const { posts, totalPages, isPostsLoading } = usePosts();
     const { sortedPosts, selectedSort } = useSortedPosts(posts);
     const { searchQuery, sortedAndSearchedPosts } =
-      useSortedAndSearch(sortedPosts);
+      useSortedAndSearchedPosts(sortedPosts);
     return {
       posts,
       totalPages,

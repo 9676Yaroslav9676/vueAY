@@ -11,8 +11,8 @@ export default function usePosts(limit) {
         "https://jsonplaceholder.typicode.com/posts",
         {
           params: {
-            _page: this.page,
-            _limit: this.limit,
+            _page: 1,
+            _limit: limit,
           },
         }
       );
